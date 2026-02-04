@@ -1,0 +1,10 @@
+Package: tdedecoration-twin-q4win10
+Version: 2.0
+Section: x11
+Priority: optional
+Architecture: amd64
+Depends: tdebase-trinity
+Maintainer: seb3773 <seb3773@github.com>
+Description: Q4WIN10 Window Decoration for Trinity Desktop Environment
+ A flat, modern Windows 10 inspired window decoration for TDE.
+ Optimized for speed and minimal size.

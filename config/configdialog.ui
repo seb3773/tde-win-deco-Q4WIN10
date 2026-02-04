@@ -1,0 +1,89 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>ConfigDialog</class>
+<widget class="TQWidget">
+    <property name="name">
+        <cstring>ConfigDialog</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>541</width>
+            <height>170</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Config Dialog</string>
+    </property>
+    <vbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <property name="margin">
+            <number>0</number>
+        </property>
+        <widget class="TQLabel">
+            <property name="name">
+                <cstring>labelTitle</cstring>
+            </property>
+            <property name="text">
+                <string>Q4WIN10</string>
+            </property>
+            <property name="alignment">
+                <set>AlignVCenter|AlignHCenter</set>
+            </property>
+        </widget>
+        <widget class="TQLabel">
+            <property name="name">
+                <cstring>labelDesc</cstring>
+            </property>
+            <property name="text">
+                <string>A windows10 like decoration plugin for Trinity Desktop</string>
+            </property>
+            <property name="alignment">
+                <set>AlignVCenter|AlignHCenter</set>
+            </property>
+        </widget>
+        <widget class="TQLabel">
+            <property name="name">
+                <cstring>labelAuthor</cstring>
+            </property>
+            <property name="text">
+                <string>based on Plastik - by Seb3773</string>
+            </property>
+            <property name="alignment">
+                <set>AlignVCenter|AlignHCenter</set>
+            </property>
+        </widget>
+        <spacer>
+            <property name="name">
+                <cstring>spacerCredit</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Vertical</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Fixed</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>20</width>
+                    <height>10</height>
+                </size>
+            </property>
+        </spacer>
+        <widget class="TQCheckBox">
+            <property name="name">
+                <cstring>darkMode</cstring>
+            </property>
+            <property name="text">
+                <string>Dark Mode</string>
+            </property>
+            <property name="whatsThis" stdset="0">
+                <string>Check this option to use white icons for buttons, suitable for dark themes.</string>
+            </property>
+        </widget>
+    </vbox>
+</widget>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

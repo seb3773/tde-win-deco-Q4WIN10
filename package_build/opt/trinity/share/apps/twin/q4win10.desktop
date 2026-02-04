@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Q4Win10
+Comment=Q4Win10 Window Decoration
+X-TDE-ConfigModule=twin_q4win10_config
+X-TDE-Library=twin3_q4win10
