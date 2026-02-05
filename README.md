@@ -7,7 +7,7 @@ Designed to match the Q4Win10 Widget Style.
 *   **Windows 10 Aesthetics**: Flat design, authentic button shapes and colors.
 *   **Configuration Support**: Includes a dedicated configuration panel with "Dark Mode" support.
 *   **Highly Optimized**: Compiled with `-O2 -flto -ffast-math -fmerge-all-constants`.
-*   **Minimized Binary**: Uses `sstrip` to reach ~20KB-40KB per module.
+*   **Minimized Binary**: Uses `sstrip` to reach ~37KB (config) and ~78KB (decoration).
 
 
 ## Integration & Compilation
@@ -58,8 +58,9 @@ Trinity's `KLibLoader` strictly requires `.la` files in `/opt/trinity/lib/trinit
 
 ## Optimization Notes
 The standalone Makefile uses `sstrip` (Super-Strip) to minimize binary size.
-- Standard `.so`: ~35-40 KB
-- Super-stripped `.so`: ~16-18 KB (optimized for R/O memory)
+- **Decoration**: ~78 KB (stripped)
+- **Configuration**: ~37 KB (stripped)
+- **Total Payload**: ~115 KB
 
 ## Packaging
 Run `./create_deb.sh` to generate a stand-alone `.deb` package.
