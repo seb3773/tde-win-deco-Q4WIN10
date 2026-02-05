@@ -1,12 +1,12 @@
 # Q4WIN10 Window Decoration (Twin)
 
-A lightweight, flat Windows 10 inspired window decoration for Trinity Desktop Environment (TDE).
+A lightweight, flat Windows 10 inspired window decoration for Trinity Desktop Environment (TDE)based on Plastik.
 Designed to match the Q4Win10 Widget Style.
 
 ## Features
 *   **Windows 10 Aesthetics**: Flat design, authentic button shapes and colors.
 *   **Configuration Support**: Includes a dedicated configuration panel with "Dark Mode" support.
-*   **Highly Optimized**: Compiled with `-O2 -flto -ffast-math -fmerge-all-constants`.
+*   **Optimized**: Compiled with `-O2 -flto -ffast-math -fmerge-all-constants`.
 *   **Minimized Binary**: Uses `sstrip` to reach ~37KB (config) and ~78KB (decoration).
 
 
