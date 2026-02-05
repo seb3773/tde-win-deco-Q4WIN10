@@ -26,6 +26,7 @@
 #include <tqslider.h>
 #include <tqspinbox.h>
 #include <tqwhatsthis.h>
+#include <ntqlayout.h>
 
 #include <tdeconfig.h>
 #include <tdeglobal.h>
@@ -41,15 +42,17 @@ Q4Win10Config::Q4Win10Config(TDEConfig *config, TQWidget *parent)
   TDEGlobal::locale()->insertCatalogue("twin_clients");
 
   // create and show the configuration dialog
+  TQVBoxLayout *layout = new TQVBoxLayout(parent);
   m_dialog = new ConfigDialog(parent);
+  layout->addWidget(m_dialog);
   m_dialog->show();
 
   // load the configuration
   load(config);
 
   // setup the connections
-  connect(m_dialog->darkMode, TQ_SIGNAL(toggled(bool)), this,
-          TQ_SIGNAL(changed()));
+  connect(m_dialog->darkMode, TQT_SIGNAL(toggled(bool)), this,
+          TQT_SIGNAL(changed()));
 }
 
 Q4Win10Config::~Q4Win10Config() {
@@ -80,9 +83,10 @@ void Q4Win10Config::defaults() { m_dialog->darkMode->setChecked(false); }
 //////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
-TDE_EXPORT TQObject *allocate_config(TDEConfig *config, TQWidget *parent) {
+KDE_EXPORT TQObject *allocate_config(TDEConfig *config, TQWidget *parent) {
   return (new Q4Win10Config(config, parent));
 }
 }
 
 #include "config.moc"
+#include "configdialog.moc"

@@ -59,8 +59,8 @@ bool Q4Win10Handler::reset(unsigned long changed) {
   m_titleFont = KDecoration::options()->font(true, false);    // not small
   m_titleFontTool = KDecoration::options()->font(true, true); // small
 
-  // Hardcode border size to minimum (1px)
-  m_borderSize = 1;
+  // Hardcode border size to normal (4px)
+  m_borderSize = 4;
 
   // check if we are in reverse layout mode
   m_reverse = TQApplication::reverseLayout();
@@ -198,7 +198,9 @@ TQColor Q4Win10Handler::getColor(KWinQ4Win10::ColorType type,
         active ? 205 : 215);
     break;
   case Border:
-    return KDecoration::options()->color(ColorFrame, active);
+    return TQApplication::palette().color(
+        active ? TQPalette::Active : TQPalette::Inactive,
+        TQColorGroup::Background);
   case TitleFont:
     return KDecoration::options()->color(ColorFont, active);
   default:
@@ -254,8 +256,14 @@ const TQPixmap &Q4Win10Handler::pixmap(Pixmaps type, bool active,
       pm = new TQPixmap(1, 4);
       painter.begin(pm);
       // contour
-      painter.setPen(getColor(WindowContour, active));
-      painter.drawPoint(0, 0);
+      if (active) {
+        painter.setPen(getColor(WindowContour, active));
+        painter.drawPoint(0, 0);
+      } else {
+        // Uniformize top edge with others
+        painter.setPen(m_darkMode ? TQColor(90, 90, 90) : TQColor(170, 170, 170));
+        painter.drawPoint(0, 0);
+      }
       // top highlight
       painter.setPen(getColor(ShadeTitleLight, active));
       painter.drawPoint(0, 1);
@@ -288,13 +296,11 @@ const TQPixmap &Q4Win10Handler::pixmap(Pixmaps type, bool active,
     painter.drawTiledPixmap(0, 4, w, h - 4,
                             pixmap(TitleBarTile, active, toolWindow));
 
-    painter.setPen(getColor(WindowContour, active));
-    painter.drawLine(0, 0, 0, h);
-    painter.drawPoint(1, 1);
-
-    const TQColor highlightTitleLeft = getColor(ShadeTitleLight, active);
-    painter.setPen(highlightTitleLeft);
-    painter.drawLine(1, 2, 1, h);
+    // Seamless: No contours or highlights in title segments
+    if (!active) {
+      painter.setPen(m_darkMode ? TQColor(90, 90, 90) : TQColor(170, 170, 170));
+      painter.drawLine(0, 0, 0, h);
+    }
 
     // outside the region normally masked by doShape
     // Removed to ensure square corners
@@ -317,13 +323,11 @@ const TQPixmap &Q4Win10Handler::pixmap(Pixmaps type, bool active,
     painter.drawTiledPixmap(0, 4, w, h - 4,
                             pixmap(TitleBarTile, active, toolWindow));
 
-    painter.setPen(getColor(WindowContour, active));
-    painter.drawLine(w - 1, 0, w - 1, h);
-    painter.drawPoint(w - 2, 1);
-
-    const TQColor highlightTitleRight = getColor(ShadeTitleDark, active);
-    painter.setPen(highlightTitleRight);
-    painter.drawLine(w - 2, 2, w - 2, h);
+    // Seamless: No contours or highlights in title segments
+    if (!active) {
+      painter.setPen(m_darkMode ? TQColor(90, 90, 90) : TQColor(170, 170, 170));
+      painter.drawLine(w - 1, 0, w - 1, h);
+    }
 
     // outside the region normally masked by doShape
     // Removed to ensure square corners
@@ -340,25 +344,14 @@ const TQPixmap &Q4Win10Handler::pixmap(Pixmaps type, bool active,
     pm = new TQPixmap(w, 1);
     TQPainter painter(pm);
 
-    // Dynamic Inactive Border Logic:
-    // Active: Paint TitleBar Color (appears borderless/seamless)
-    // Inactive: Paint 1px Grey Border
+    // Dynamic Inactive Border Logic (Seamless 4px)
     if (active) {
-      painter.setPen(
-          getColor(TitleGradient3, true)); // Matches persistent title bar
+      painter.fillRect(0, 0, w, 1, getColor(Border, active));
     } else {
-      // Inactive Border Color
-      if (m_darkMode)
-        painter.setPen(TQt::lightGray);
-      else
-        painter.setPen(TQt::darkGray);
-    }
-
-    painter.drawPoint(0, 0);
-    // Draw optional second pixel if border > 1 (shouldn't be, since
-    // m_borderSize=1)
-    if (w > 1) {
-      painter.drawLine(1, 0, w - 1, 0);
+      // 1px gray edge on the outside, rest is window background
+      painter.fillRect(0, 0, w, 1, getColor(Border, active));
+      painter.setPen(m_darkMode ? TQColor(90, 90, 90) : TQColor(170, 170, 170));
+      painter.drawPoint(0, 0); // Outside edge is at x=0
     }
 
     painter.end();
@@ -374,20 +367,14 @@ const TQPixmap &Q4Win10Handler::pixmap(Pixmaps type, bool active,
     pm = new TQPixmap(w, 1);
     TQPainter painter(pm);
 
-    // Dynamic Inactive Border Logic
+    // Dynamic Inactive Border Logic (Seamless 4px)
     if (active) {
-      painter.setPen(getColor(TitleGradient3, true));
+      painter.fillRect(0, 0, w, 1, getColor(Border, active));
     } else {
-      if (m_darkMode)
-        painter.setPen(TQt::lightGray);
-      else
-        painter.setPen(TQt::darkGray);
-    }
-
-    painter.drawPoint(w - 1, 0);
-    // Fill rest if > 1
-    if (w > 1) {
-      painter.drawLine(0, 0, w - 2, 0);
+      // 1px gray edge on the outside, rest is window background
+      painter.fillRect(0, 0, w, 1, getColor(Border, active));
+      painter.setPen(m_darkMode ? TQColor(90, 90, 90) : TQColor(170, 170, 170));
+      painter.drawPoint(w - 1, 0); // Outside edge is at x=w-1
     }
 
     painter.end();
@@ -404,18 +391,16 @@ const TQPixmap &Q4Win10Handler::pixmap(Pixmaps type, bool active,
     pm = new TQPixmap(w, h);
     TQPainter painter(pm);
 
-    // Dynamic Inactive Border Logic
+    // Dynamic Inactive Border Logic (Seamless 4px)
     if (active) {
-      painter.setPen(getColor(TitleGradient3, true));
+      painter.fillRect(0, 0, w, h, getColor(Border, active));
     } else {
-      if (m_darkMode)
-        painter.setPen(TQt::lightGray);
-      else
-        painter.setPen(TQt::darkGray);
+      // 1px gray edge on the outside, rest is window background
+      painter.fillRect(0, 0, w, h, getColor(Border, active));
+      painter.setPen(m_darkMode ? TQColor(90, 90, 90) : TQColor(170, 170, 170));
+      painter.drawLine(0, 0, 0, h - 1);         // Left edge
+      painter.drawLine(0, h - 1, w - 1, h - 1); // Bottom edge
     }
-    // Draw L Shape (Left and Bottom)
-    painter.drawLine(0, 0, 0, h - 1);         // Left
-    painter.drawLine(0, h - 1, w - 1, h - 1); // Bottom
 
     painter.end();
 
@@ -429,18 +414,16 @@ const TQPixmap &Q4Win10Handler::pixmap(Pixmaps type, bool active,
     pm = new TQPixmap(w, h);
     TQPainter painter(pm);
 
-    // Dynamic Inactive Border Logic
+    // Dynamic Inactive Border Logic (Seamless 4px)
     if (active) {
-      painter.setPen(getColor(TitleGradient3, true));
+      painter.fillRect(0, 0, w, h, getColor(Border, active));
     } else {
-      if (m_darkMode)
-        painter.setPen(TQt::lightGray);
-      else
-        painter.setPen(TQt::darkGray);
+      // 1px gray edge on the outside, rest is window background
+      painter.fillRect(0, 0, w, h, getColor(Border, active));
+      painter.setPen(m_darkMode ? TQColor(90, 90, 90) : TQColor(170, 170, 170));
+      painter.drawLine(w - 1, 0, w - 1, h - 1); // Right edge
+      painter.drawLine(0, h - 1, w - 1, h - 1); // Bottom edge
     }
-    // Draw L Shape (Right and Bottom)
-    painter.drawLine(w - 1, 0, w - 1, h - 1); // Right
-    painter.drawLine(0, h - 1, w - 1, h - 1); // Bottom
 
     painter.end();
 
@@ -454,13 +437,14 @@ const TQPixmap &Q4Win10Handler::pixmap(Pixmaps type, bool active,
     pm = new TQPixmap(1, m_borderSize);
     TQPainter painter(pm);
 
-    painter.setPen(getColor(Border, active));
-    painter.drawLine(0, 0, 0, h - 3);
-    painter.setPen(alphaBlendColors(getColor(Border, active),
-                                    getColor(ShadeTitleDark, active), 130));
-    painter.drawPoint(0, h - 2);
-    painter.setPen(getColor(WindowContour, active));
-    painter.drawPoint(0, h - 1);
+    if (active) {
+      painter.fillRect(0, 0, 1, h, getColor(Border, active));
+    } else {
+      // 1px gray edge on the bottom, rest is window background
+      painter.fillRect(0, 0, 1, h, getColor(Border, active));
+      painter.setPen(m_darkMode ? TQColor(90, 90, 90) : TQColor(170, 170, 170));
+      painter.drawPoint(0, h - 1); // Bottom edge is at y=h-1
+    }
     painter.end();
 
     pretile(pm, 64, TQt::Horizontal);
@@ -508,9 +492,9 @@ const TQBitmap &Q4Win10Handler::buttonBitmap(ButtonIcon type,
 }
 
 TQValueList<Q4Win10Handler::BorderSize> Q4Win10Handler::borderSizes() const {
-  // Only allow Tiny border (Hardcoded) which effectively disables the dropdown
-  // choice
-  return TQValueList<BorderSize>() << BorderTiny;
+  // Only allow Normal border (Hardcoded) which effectively disables the
+  // dropdown choice
+  return TQValueList<BorderSize>() << BorderNormal;
 }
 
 // make the handler accessible to other classes...
@@ -524,7 +508,7 @@ Q4Win10Handler *Handler() { return handler; }
 //////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
-TDE_EXPORT KDecorationFactory *create_factory() {
+KDE_EXPORT KDecorationFactory *create_factory() {
   KWinQ4Win10::handler = new KWinQ4Win10::Q4Win10Handler();
   return KWinQ4Win10::handler;
 }

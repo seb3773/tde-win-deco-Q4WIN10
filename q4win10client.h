@@ -43,6 +43,7 @@ public:
   virtual int layoutMetric(LayoutMetric lm, bool respectWindowState = true,
                            const KCommonDecorationButton * = 0) const;
   virtual TQRegion cornerShape(WindowCorner corner);
+  virtual void borders(int &left, int &right, int &top, int &bottom) const;
   virtual KCommonDecorationButton *createButton(ButtonType type);
 
   virtual void init();

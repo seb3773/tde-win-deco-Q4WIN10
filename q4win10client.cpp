@@ -203,6 +203,25 @@ TQRegion Q4Win10Client::cornerShape(WindowCorner corner) {
   return TQRegion();
 }
 
+void Q4Win10Client::borders(int &left, int &right, int &top, int &bottom) const {
+  bool maximized = maximizeMode() == MaximizeFull &&
+                   !options()->moveResizeMaximizedWindows();
+
+  if (maximized) {
+    left = right = bottom = 0;
+  } else {
+    left = right = bottom = Handler()->borderSize();
+  }
+
+  top = layoutMetric(LM_TitleHeight) + layoutMetric(LM_TitleEdgeTop) +
+        layoutMetric(LM_TitleEdgeBottom);
+
+  // Debug: force 4 if handler failed
+  if (left < 4 && !maximized) {
+      left = right = bottom = 4;
+  }
+}
+
 void Q4Win10Client::paintEvent(TQPaintEvent *e) {
   TQRegion region = e->region();
 
