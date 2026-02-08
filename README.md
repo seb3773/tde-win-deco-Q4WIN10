@@ -61,7 +61,7 @@ To create a standalone Debian package (`.deb`) ready for distribution:
     ```bash
     ./create_deb.sh
     ```
-The resulting package will be named `tde-win-deco-q4win10_<version>_tde14.1.1_<arch>.deb`.
+The resulting package will be named `tde-win-deco-q4win10_<version>_tde14.1.x_<arch>.deb`.
 
 ## Important: Plugin Loading (.la files)
 
