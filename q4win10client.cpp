@@ -35,7 +35,37 @@
 #include "q4win10button.h"
 #include "q4win10client.h"
 
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+
 namespace KWinQ4Win10 {
+
+// Helper to read X11 property from Style Plugin
+static int getMenuBarHeight(WId winId) {
+    if (!winId) return 0;
+    Display *dpy = tqt_xdisplay();
+    Atom atom = XInternAtom(dpy, "_Q4WIN10_MENUBAR_HEIGHT", True);
+    if (atom == None) return 0;
+
+    Atom actualType;
+    int actualFormat;
+    unsigned long nitems;
+    unsigned long bytesAfter;
+    unsigned char *prop = 0;
+    int height = 0;
+
+    if (XGetWindowProperty(dpy, winId, atom, 0, 1, False, XA_CARDINAL,
+                           &actualType, &actualFormat, &nitems, &bytesAfter,
+                           &prop) == Success) {
+        if (prop) {
+            if (actualType == XA_CARDINAL && actualFormat == 32 && nitems > 0) {
+                height = (int)*(long *)prop;
+            }
+            XFree(prop);
+        }
+    }
+    return height;
+}
 
 Q4Win10Client::Q4Win10Client(KDecorationBridge *bridge,
                              KDecorationFactory *factory)
@@ -328,22 +358,88 @@ void Q4Win10Client::paintEvent(TQPaintEvent *e) {
   }
 
   // leftSpacer
+  // leftSpacer
   if (borderLeft > 0 && sideHeight > 0) {
-    tempRect.setCoords(r_x, titleEdgeBottomBottom + 1, borderLeftRight,
-                       borderBottomTop - 1);
-    if (tempRect.isValid() && region.contains(tempRect)) {
-      painter.drawTiledPixmap(
-          tempRect, handler->pixmap(BorderLeftTile, active, toolWindow));
+    int mbHeight = getMenuBarHeight(windowId());
+    
+    // Split Border Logic
+    if (mbHeight > 0 && mbHeight < sideHeight) {
+        // TOP Section (Menu Bar Level) - Paint with Base Color (White)
+        TQRect menuRect;
+        // Adjusted height: mbHeight - 2 to match visual menu bar bottom
+        menuRect.setCoords(r_x, titleEdgeBottomBottom + 1, borderLeftRight, 
+                           titleEdgeBottomBottom + mbHeight - 2);
+        if (menuRect.isValid() && region.contains(menuRect)) {
+            painter.fillRect(menuRect, widget()->colorGroup().base());
+            // Add a 1px line on the left edge if needed for contrast? 
+            // The style usually puts a 1px border. Let's replicate BorderLeftTile logic for the outer edge.
+            if (!active) {
+                 painter.setPen(Handler()->darkMode() ? TQColor(90, 90, 90) : TQColor(170, 170, 170));
+                 painter.drawPoint(menuRect.left(), menuRect.top());
+                 painter.drawLine(menuRect.left(), menuRect.top(), menuRect.left(), menuRect.bottom());
+            }
+        }
+
+        // BOTTOM Section (Rest of Window) - Paint with Standard Border Tile
+        // Adjusted start Y: mbHeight - 2 + 1 = mbHeight - 1
+        tempRect.setCoords(r_x, titleEdgeBottomBottom + mbHeight - 1, borderLeftRight,
+                           borderBottomTop - 1);
+        if (tempRect.isValid() && region.contains(tempRect)) {
+           // We need to offset the tile drawing so it aligns? 
+           // drawTiledPixmap origin is default top-left of rect.
+           painter.drawTiledPixmap(
+              tempRect, handler->pixmap(BorderLeftTile, active, toolWindow));
+        }
+
+    } else {
+        // Standard Uniform Border
+        tempRect.setCoords(r_x, titleEdgeBottomBottom + 1, borderLeftRight,
+                           borderBottomTop - 1);
+        if (tempRect.isValid() && region.contains(tempRect)) {
+            painter.drawTiledPixmap(
+                tempRect, handler->pixmap(BorderLeftTile, active, toolWindow));
+        }
     }
   }
 
   // rightSpacer
+  // rightSpacer
   if (borderRight > 0 && sideHeight > 0) {
-    tempRect.setCoords(borderRightLeft, titleEdgeBottomBottom + 1, r_x2,
-                       borderBottomTop - 1);
-    if (tempRect.isValid() && region.contains(tempRect)) {
-      painter.drawTiledPixmap(
-          tempRect, handler->pixmap(BorderRightTile, active, toolWindow));
+    int mbHeight = getMenuBarHeight(windowId());
+    
+    // Split Border Logic
+    if (mbHeight > 0 && mbHeight < sideHeight) {
+        // TOP Section (Menu Bar Level) - Paint with Base Color (White)
+        TQRect menuRect;
+        // Adjusted height: mbHeight - 2
+        menuRect.setCoords(borderRightLeft, titleEdgeBottomBottom + 1, r_x2, 
+                           titleEdgeBottomBottom + mbHeight - 2);
+        if (menuRect.isValid() && region.contains(menuRect)) {
+            painter.fillRect(menuRect, widget()->colorGroup().base());
+            // Outer edge logic for inactive window
+            if (!active) {
+                 painter.setPen(Handler()->darkMode() ? TQColor(90, 90, 90) : TQColor(170, 170, 170));
+                 painter.drawLine(menuRect.right(), menuRect.top(), menuRect.right(), menuRect.bottom());
+            }
+        }
+
+        // BOTTOM Section (Rest of Window)
+        // Adjusted start Y: mbHeight - 1
+        tempRect.setCoords(borderRightLeft, titleEdgeBottomBottom + mbHeight - 1, r_x2,
+                           borderBottomTop - 1);
+        if (tempRect.isValid() && region.contains(tempRect)) {
+            painter.drawTiledPixmap(
+                tempRect, handler->pixmap(BorderRightTile, active, toolWindow));
+        }
+
+    } else {
+        // Standard Uniform Border
+        tempRect.setCoords(borderRightLeft, titleEdgeBottomBottom + 1, r_x2,
+                           borderBottomTop - 1);
+        if (tempRect.isValid() && region.contains(tempRect)) {
+            painter.drawTiledPixmap(
+                tempRect, handler->pixmap(BorderRightTile, active, toolWindow));
+        }
     }
   }
 
@@ -491,7 +587,7 @@ const TQPixmap &Q4Win10Client::captionPixmap() const {
       Handler()->pixmap(TitleBarTile, active, isToolWindow()));
 
   painter.setFont(s_titleFont);
-  TQPoint tp(1, captionHeight - 1);
+  TQPoint tp(1, captionHeight - 4); // Adjusted: -3 instead of -1 to center title vertically
   if (Handler()->titleShadow()) {
     TQColor shadowColor;
     if (tqGray(Handler()->getColor(TitleFont, active).rgb()) < 100)
