@@ -1,14 +1,27 @@
 # Q4WIN10 Window Decoration (Twin)
 
-A lightweight, flat Windows 10 inspired window decoration for Trinity Desktop Environment (TDE)based on Plastik.
+A lightweight, flat Windows 10 inspired window decoration for Trinity Desktop Environment (TDE) based on Plastik.
 Designed to match the Q4Win10 Widget Style.
 
 ## Features
 *   **Windows 10 Aesthetics**: Flat design, authentic button shapes and colors.
 *   **Configuration Support**: Includes a dedicated configuration panel with "Dark Mode" support.
 *   **Optimized**: Compiled with `-O2 -flto -ffast-math -fmerge-all-constants`.
-*   **Minimized Binary**: Uses `sstrip` to reach ~37KB (config) and ~78KB (decoration).
+*   **Minimized Binary**: Uses `sstrip` to reach ~37KB (config) and ~85KB (decoration).
 
+
+
+## Context-Aware Window Borders (X11 Integration)
+
+The decoration implements an X11 Atom-based receiver to scan for the `_Q4WIN10_MENUBAR_HEIGHT` property set by the Style plugin.
+
+### Implementation Details
+- **Role**: Receiver.
+- **Action**: In `paintEvent`, the decoration checks for the `_Q4WIN10_MENUBAR_HEIGHT` property on the client window.
+- **Logic**:
+    - If the property exists and `height > 0`, the top section of the side borders (corresponding to the menu height minus 2 pixels) is painted with the **Base** color (Standard Base Color) to align with the menu bar.
+    - The rest of the border is painted with the standard **Background** color (Grey).
+    - If the property is missing (e.g., non-Q4WIN10 style), it falls back to a standard uniform grey border.
 
 ## Integration & Compilation
 
@@ -58,9 +71,9 @@ Trinity's `KLibLoader` strictly requires `.la` files in `/opt/trinity/lib/trinit
 
 ## Optimization Notes
 The standalone Makefile uses `sstrip` (Super-Strip) to minimize binary size.
-- **Decoration**: ~78 KB (stripped)
+- **Decoration**: ~85 KB (stripped)
 - **Configuration**: ~37 KB (stripped)
-- **Total Payload**: ~115 KB
+- **Total Payload**: ~123 KB
 
 ## Packaging
 Run `./create_deb.sh` to generate a stand-alone `.deb` package.
