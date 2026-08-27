@@ -1,24 +1,24 @@
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Thu, 27 Aug 2026 20:23:12 +0000
+Date: Thu, 27 Aug 2026 23:39:39 +0000
 Description: APT Repository for Q4WIN10 Window Decoration (Trinity Desktop)
 Label: Q4WIN10 Window Decoration APT Repository
 Origin: Q4WIN10
 Suite: stable
 MD5Sum:
- 04881bb38decdb179ec5730b6933db15              247 Release
+ b382791167f9a96a68048a65d723cd0d              247 Release
  b9f4d24d89882104cc58dd06ed4a1025             1816 main/binary-amd64/Packages
- abff5810390d881b36d3ceb08fd1b307              677 main/binary-amd64/Packages.gz
+ 195de730946fe6a0850ad77f35565824              677 main/binary-amd64/Packages.gz
 SHA1:
- fa4962b887610df42e5075a4fcfc0d032ed69272              247 Release
+ 1c05291448d8cf7e3b551f479c2155d32384b6b1              247 Release
  bc7dae496e27fe09a2b4d098252e4daf92add027             1816 main/binary-amd64/Packages
- 672dda9f2f4695a77a9b2647faad293aadaded3e              677 main/binary-amd64/Packages.gz
+ 02b12168d33ef3ea3b54f46613324b5a04e5f5b1              677 main/binary-amd64/Packages.gz
 SHA256:
- 408d585375191a4d02a82300bef416f12d6ef4c8856307747b7d94d9cddc84ca              247 Release
+ e3473ed4f71d303e98f49f213ab26e7536fcdd67fbb427af5e2ba66b8d1cbc5d              247 Release
  de266084030630c9ee611e4096ea0b46c6499a10a6ca86fda76a401f7a860944             1816 main/binary-amd64/Packages
- 9fe094d5b2e3bf45c39146512364268d0171d34f0c0765d342b08a5e0d68d86d              677 main/binary-amd64/Packages.gz
+ f5b6a1b8f49da2a42741fe3455493a1f2f3c7f32b689e6eef637f06ea6577cf6              677 main/binary-amd64/Packages.gz
 SHA512:
- 8de872557361ed0298eb7c7872b6049c62d64f1ae87ff29e1f20223cde5e9699a9980dc77b0c45ef918e26e16a7f65b3b5cce2533f8e41496ca8c88421e521ec              247 Release
+ a6b1c0b2cdf51bbacfcdbbef16dcd33b6bc150be6820ac9119ec68820efd2e9b3a20a5c393d35261d4a384c19f6501ef9ce2983cebaf451b454ce5b1cc494961              247 Release
  f0173e7eb9c359e6a9f8b48ecabd5b4453f4a9a77ded174b61e1a45d484e14c6f402f110c85f8fb1b3897f62bf8e7c61bd98cabf8c15f41e2556e622893bd94d             1816 main/binary-amd64/Packages
- 9ef668ed5d969944692c326065f402660a23fd71b6d819196de10216a4089255a3b0be9f0c488e7d479d7796266eaae2cdf251337777317df314ef799753ef82              677 main/binary-amd64/Packages.gz
+ 96ba726468ba779d530fdb683432e5da08930bfd08c082336d037c6cb5f7ca6a90fef2c2fb92aed7785c3b5e84de9b4627c67e28ffc8a7e50b56483f29be1895              677 main/binary-amd64/Packages.gz
