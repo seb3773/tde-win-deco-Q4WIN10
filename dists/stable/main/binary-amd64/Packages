@@ -1,0 +1,42 @@
+Package: tde-win-deco-q4win10
+Version: 2.0
+Architecture: amd64
+Maintainer: seb3773 <seb3773@github.com>
+Depends: libtqt3-mt, tdelibs14-trinity, twin-trinity | tdebase-trinity | tde-tdebase
+Conflicts: tdedecoration-twin-q4win10
+Replaces: tdedecoration-twin-q4win10, tde-win-deco-q4win10-tde14
+Provides: tdedecoration-twin-q4win10
+Filename: pool/main/t/tde-win-deco-q4win10/tde-win-deco-q4win10_2.0_amd64.deb
+Size: 23996
+MD5sum: 1fadebe8684f390483c3ac4c598e134a
+SHA1: d2ab1d7bd0dd5350cecdd00fd6a160b305dc26b5
+SHA256: 72dcd8c3a8711742cfb27a9a91057793e27337b6f0fdba196e2d14391eab16b3
+Section: x11
+Priority: optional
+Description: Q4WIN10 Window Decoration for Trinity Desktop Environment
+ Standalone Windows 10 & 11 style window decoration plugin for TDE Twin.
+ Compatible with all TDE R14.1.x releases (R14.1.0 to R14.1.6+).
+ Highly optimized build.
+ Homepage: https://github.com/seb3773/tde-win-deco-Q4WIN10
+
+Package: tde-win-deco-q4win10
+Version: 2.0.1
+Architecture: amd64
+Maintainer: seb3773 <seb3773@github.com>
+Depends: libtqt3-mt, tdelibs14-trinity, twin-trinity | tdebase-trinity | tde-tdebase
+Conflicts: tdedecoration-twin-q4win10
+Replaces: tdedecoration-twin-q4win10, tde-win-deco-q4win10-tde14
+Provides: tdedecoration-twin-q4win10
+Filename: pool/main/t/tde-win-deco-q4win10/tde-win-deco-q4win10_2.0.1_amd64.deb
+Size: 25484
+MD5sum: cbe06f0141548908d98ec217585f4464
+SHA1: de1ed15bb016985258100afdfeb137eeba40c62f
+SHA256: dbb04c914bb99fabbe08be7d5a2ee1947d370e351dfc5f9b092b2c349b6317b2
+Section: x11
+Priority: optional
+Description: Q4WIN10 Window Decoration for Trinity Desktop Environment
+ Standalone Windows 10 & 11 style window decoration plugin for TDE Twin.
+ Compatible with all TDE R14.1.x releases (R14.1.0 to R14.1.6+).
+ Highly optimized build.
+ Homepage: https://github.com/seb3773/tde-win-deco-Q4WIN10
+
