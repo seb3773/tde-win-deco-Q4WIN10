@@ -1,0 +1,5 @@
+#!/bin/sh
+# Q4OS post-setup user hook for Q4WIN10 Window Decoration
+set -e
+
+exit 0

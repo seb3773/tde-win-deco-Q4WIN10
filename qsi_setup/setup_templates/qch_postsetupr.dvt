@@ -1,0 +1,9 @@
+#!/bin/sh
+# Q4OS post-setup root hook for Q4WIN10 Window Decoration
+set -e
+
+if [ -x /opt/trinity/bin/tdebuildsycoca ]; then
+    /opt/trinity/bin/tdebuildsycoca >/dev/null 2>&1 || true
+fi
+
+exit 0

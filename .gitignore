@@ -1,0 +1,34 @@
+# Build directories
+build/
+package_build/
+
+# QSI build directories
+qsi_setup/deb_packages/
+qsi_setup/output/
+qsi_setup/qinstaller
+
+# Compiled libraries & objects
+*.so
+*.o
+*.a
+*.la
+
+# Generated MOC and UI files
+*.moc
+moc_*.cpp
+config/moc_*.cpp
+configdialog.h
+configdialog.cpp
+config/configdialog.h
+config/configdialog.cpp
+
+# Generated packages
+*.deb
+*.qsi
+
+# Temporary & editor files
+*~
+*.swp
+*.bak
+_ressources/
+test_twin3_q4win10.so
