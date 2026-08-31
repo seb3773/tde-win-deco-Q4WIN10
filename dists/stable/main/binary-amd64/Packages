@@ -28,10 +28,10 @@ Conflicts: tdedecoration-twin-q4win10
 Replaces: tdedecoration-twin-q4win10, tde-win-deco-q4win10-tde14
 Provides: tdedecoration-twin-q4win10
 Filename: pool/main/t/tde-win-deco-q4win10/tde-win-deco-q4win10_2.0.1_amd64.deb
-Size: 25484
-MD5sum: cbe06f0141548908d98ec217585f4464
-SHA1: de1ed15bb016985258100afdfeb137eeba40c62f
-SHA256: dbb04c914bb99fabbe08be7d5a2ee1947d370e351dfc5f9b092b2c349b6317b2
+Size: 25696
+MD5sum: da7bf6b6184d2908f94c7c275ebc57a7
+SHA1: 9481855852a65336833cd2c006c35e1c964ed801
+SHA256: 05c1fe11c4bbf513177e94848cddd2b8ccaba8dd5c667f5e1d9a95f0693c8f6b
 Section: x11
 Priority: optional
 Description: Q4WIN10 Window Decoration for Trinity Desktop Environment
