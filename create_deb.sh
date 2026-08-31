@@ -88,8 +88,17 @@ done
 cat <<EOF > "$BUILD_DIR/DEBIAN/postinst"
 #!/bin/sh
 set -e
+# Configuration automatique du dépôt APT pour les futures mises à jour
+if [ -d /etc/apt/sources.list.d ]; then
+    cat << REPEOF > /etc/apt/sources.list.d/tde-win-deco-q4win10.list
+# tde-win-deco-q4win10 APT Repository
+deb [trusted=yes] https://seb3773.github.io/tde-win-deco-Q4WIN10/ stable main
+REPEOF
+fi
 if [ -x /opt/trinity/bin/tdebuildsycoca ]; then
     /opt/trinity/bin/tdebuildsycoca >/dev/null 2>&1 || true
+elif command -v tdebuildsycoca >/dev/null 2>&1; then
+    tdebuildsycoca >/dev/null 2>&1 || true
 fi
 exit 0
 EOF
@@ -99,8 +108,13 @@ chmod 755 "$BUILD_DIR/DEBIAN/postinst"
 cat <<EOF > "$BUILD_DIR/DEBIAN/postrm"
 #!/bin/sh
 set -e
+if [ "\$1" = "purge" ] || [ "\$1" = "remove" ]; then
+    rm -f /etc/apt/sources.list.d/tde-win-deco-q4win10.list
+fi
 if [ -x /opt/trinity/bin/tdebuildsycoca ]; then
     /opt/trinity/bin/tdebuildsycoca >/dev/null 2>&1 || true
+elif command -v tdebuildsycoca >/dev/null 2>&1; then
+    tdebuildsycoca >/dev/null 2>&1 || true
 fi
 exit 0
 EOF
